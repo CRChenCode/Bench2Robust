@@ -105,8 +105,6 @@ Injection is disabled for configured write actions and selected meta-tools. A se
 
 Scenario control (S1/S2/S3) is separate from stochastic injection (`bench2robust/uncertainty/scenario.py`). Scenario-blocked tools are never executed and stay blocked until episode reset, regardless of B and K_max; unblocked fallback tools are exempt from stochastic noise (configurable via `fallback_noise`); all other tools follow the stochastic policy.
 
-In detail, each tool call first goes through the episode's `ScenarioController`. A call to a scenario-blocked tool returns an explicit blocked response, is never executed, never consults the stochastic policy (`can_inject` / `should_inject`), never consumes the injection budget, consecutive-failure or per-error counters, and never receives a silent corruption. Blocking persists until `reset()` installs the next episode's scenario. A call to an unblocked fallback tool (`ScenarioSpec.fallback_paths`: the unblocked side of an S2 equivalence class; derived from the domain's equivalence classes when only a blocked tool set is given) returns a `CLEAN` decision without consulting the stochastic policy, so it never receives an explicit failure or a silent corruption and never consumes the budget or consecutive-failure counters. `fallback_noise` selects this behaviour: `"exempt"` (default), `"exempt_s1"` (additionally, in S1 one randomly chosen side of each equivalence class is noise-free), or `"noisy"` (fallback tools follow the stochastic policy). It is accepted by `ScenarioController`, `GenericInjectionEngine`, the VitaBench and BFCL adapters, and `Tau2BenchRunner.run_episode`. In S1 (no blocking) and S3 (no unblocked side) no tool is exempt under the default. `GenericInjectionEngine.decide()` returns an explicit `Decision` (`SCENARIO_BLOCK`, `STOCHASTIC_EXEC_FAILURE`, `STOCHASTIC_SILENT_CORRUPTION`, `CLEAN`) that tells the adapter whether the tool may be executed; `Decision.fallback_exempt` marks the clean decisions of exempt fallback tools.
-
 ## Optional benchmark integrations
 
 Adapters are imported lazily. Install each benchmark from its upstream project and follow that project's license and setup instructions before using its integration.
@@ -182,55 +180,9 @@ The corrected library's correctness (no lapse, fallback exemption, reset, etc.) 
 
 **Scope.** The traces for paths (b) and (c) were produced from the original experimental code tree. The files they exercise are included under `eval/` and `training/`. These are **included traces with integrity and consistency checks**, not independently regenerable traces: `MANIFEST.sha256` checks the shipped bytes, while `count_blocked_calls.py` and `render_appendix.py` check that the trace records support the stated counts, counter separation, execution-order distinction, and unchanged-state claims. The generation harness is not included, as described above.
 
-## Data and reproducibility: building the scenario-controlled benchmark from public data
+## Data and reproducibility
 
-No task data are shipped. The scenario-controlled (S1/S2/S3) and injected versions are built at run time from the public benchmark data.
-
-**1. Get τ²-bench and its data.** Install the `tau2` extra (see [Install](#install)), then clone the same upstream commit to get the data, which the pip package does not include:
-
-```bash
-git clone https://github.com/sierra-research/tau2-bench <TAU2_DIR>
-git -C <TAU2_DIR> checkout 5ebebbe827b455b3ed04fcb9294235c6ef4e5fd6
-export TAU2_DATA_DIR=<TAU2_DIR>/data
-```
-
-**2. Choose the task set.** The original evaluation harness loads tasks through τ²-bench's own loader (`get_tasks(<domain>, task_split_name=...)`, `--task-split`; see `eval/src/run_inference.py`). With the public data, the available Retail splits are those in `<TAU2_DIR>/data/tau2/domains/retail/split_tasks.json` (`base` 114, `train` 74, `test` 40).
-
-**3. Make a held-out split** if you need one. The paper's train/held-out split was a single global shuffle of the task IDs:
-
-```python
-import json, random
-ids = [t["id"] for t in json.load(open("tasks.json"))]
-random.Random(42).shuffle(ids)
-train, heldout = ids[:937], ids[937:]   # 937/402 for the 1,339-task Combined Retail set
-```
-
-For another task set, use the same procedure with your own cut point.
-
-**4. Assign scenarios per task**, fixed across models. A `{task_id: {seed: S1|S2|S3}}` file is drawn from an md5 hash of (seed, task id); the helper that builds this file is part of the broader evaluation tooling and is **not included in this release** (out of scope for the scenario-blocking question this package addresses). For a fixed scenario instead, use the library's `ScenarioSpec` / `build_scenario_spec` (`bench2robust/uncertainty/scenario.py`) directly.
-
-**5. Scenario blocking and injection.**
-- The scenario's blocked set comes from the domain's tool equivalence classes. In the library these are `bench2robust/uncertainty/scenario.py:194` (`DOMAIN_EQUIVALENCE_CLASSES`) and `:282` (`build_scenario_spec`). The original evaluation harness has its own, equivalent tool pairs (`eval/src/run_inference.py`).
-- Blocking is enforced by `ScenarioController.decide` / `blocked_response` (`scenario.py:435`, `:452`) before the stochastic policy (`bench2robust/uncertainty/injection_policy.py:167`, `decide`) is consulted.
-- Per-task seeds come from `stable_task_seed` (`scenario.py:378`).
-
-**6. Training data.** The slime prompt-file builder (`prepare_data.py`) is part of the broader RL training pipeline and is **not included in this release**, for the same reason as step 4.
-
-**What the public data do not provide** (no code change can supply these, and is unrelated to the scenario-blocking question):
-- **The alternative ("w/ alt") tools.** The experiments added these to τ²-bench's domain toolkits:
-  - Retail: `get_user_by_order`, `get_orders_for_user`, `search_product_by_name`, `get_item_by_product_and_options`, `check_order_item_availability`;
-  - Airline: `find_user_by_email`, `find_user_by_name_dob`, `get_reservations_for_user`, `search_flights`;
-  - Telecom: further alternatives.
-
-  They are not in upstream τ²-bench and not in this repository. Without them, "Inject w/ alt" S2 has no fallback path for two of the three Retail equivalence classes, and S3 blocks tools that do not exist. S1, and the "Inject w/o alt" condition, run on upstream τ²-bench as is.
-- **The augmented task sets** Retail-3I (general/ambiguous/changing, 1,225 tasks) and Airline-3I, and therefore the 1,339-task Combined Retail set and its 937/402 split, are not public and are not part of this release.
-
-This repository is sufficient to:
-- exercise the uncertainty engine and scenario controller;
-- recount the traces, which use the public base Retail task 66;
-- inspect the code behind the reported results (the reviewer's question).
-
-It is not sufficient to reproduce the paper's tables, nor the full evaluation/training pipeline — that is intentionally out of scope for this release.
+Examples in the research workflow are synthetic benchmark records, not production customer data. This repository is sufficient to exercise the uncertainty engine, but not to reproduce every paper table, because the datasets and evaluation artifacts are not part of this release.
 
 ## Security
 
@@ -238,6 +190,4 @@ Do not commit credentials, local cloud profiles, raw service logs, model traces,
 
 ## Citation and license
 
-If you use this code, please cite the accompanying anonymous submission, "Bench2Robust: Scenario-Controlled Recovery for Tool-Using Agents".
-
-This project is released under the Creative Commons Attribution-NonCommercial 4.0 International license (`CC-BY-NC-4.0`); the full text is in [`LICENSE`](LICENSE). `training/bench2robust_rl/rollout.py` is the authors' own code living inside a fork of the open-source [slime](https://github.com/THUDM/slime) RL framework, licensed under the Apache License 2.0 (text in `training/slime/LICENSE`); the CC-BY-NC-4.0 licence above covers the authors' own contributions and does not override the Apache-2.0 licence of slime or of any slime-derived material.
+This project is released under the Creative Commons Attribution-NonCommercial 4.0 International license (`CC-BY-NC-4.0`); the full text is in [`LICENSE`](LICENSE).
