@@ -1,13 +1,8 @@
 # Copyright (c) 2026 Anonymous Authors.
 # SPDX-License-Identifier: CC-BY-NC-4.0
 
-"""Benchmark-agnostic uncertainty injection engine.
-
-Revision note: scenario blocking (S2/S3) is handled by ScenarioController BEFORE the
-stochastic policy. The previous release routed permanently blocked tools through
-InjectionPolicy.can_inject(), so blocking lapsed once B / K_max / timing / per-error
-limits were reached, blocked calls consumed those counters, and blocked calls could
-draw silent corruptions. See bench2robust/uncertainty/scenario.py.
+"""
+Benchmark-agnostic uncertainty injection engine.
 """
 
 from dataclasses import dataclass
