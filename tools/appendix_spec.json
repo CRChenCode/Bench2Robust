@@ -32,27 +32,27 @@
     "title": "Original training environment, Retail S2 persistence",
     "file": "../traces/retail_s2.jsonl",
     "path_label": "(c) original training",
-    "revision": "`rollout.py` 2026-07-24 copy, shipped sha256 `00a0a5c896edaad834cce9e6cdfa4c2ffcf6b0579c6c7330dfe76f265dc6f12a`"
+    "revision": "`rollout.py` 2026-07-24 copy, shipped sha256 `2599a73fab8bccb9288cb087c3c3ac91b7a80938b412f9c5a02c6ca327113d4c`"
   },
   {
     "id": "C2",
     "title": "Original training environment, Retail S3 persistence",
     "file": "../traces/retail_s3.jsonl",
     "path_label": "(c) original training",
-    "revision": "`rollout.py` 2026-07-24 copy, shipped sha256 `00a0a5c896edaad834cce9e6cdfa4c2ffcf6b0579c6c7330dfe76f265dc6f12a`"
+    "revision": "`rollout.py` 2026-07-24 copy, shipped sha256 `2599a73fab8bccb9288cb087c3c3ac91b7a80938b412f9c5a02c6ca327113d4c`"
   },
   {
     "id": "C3",
     "title": "Original training environment, Retail S2, B and K_max used up by a stochastic injection",
     "file": "../traces/train_counter_separation.jsonl",
     "path_label": "(c) original training",
-    "revision": "`rollout.py` 2026-07-24 copy, shipped sha256 `00a0a5c896edaad834cce9e6cdfa4c2ffcf6b0579c6c7330dfe76f265dc6f12a`"
+    "revision": "`rollout.py` 2026-07-24 copy, shipped sha256 `2599a73fab8bccb9288cb087c3c3ac91b7a80938b412f9c5a02c6ca327113d4c`"
   },
   {
     "id": "C4",
     "title": "Original training environment, Retail S3, B and K_max used up by a stochastic injection (run 2026-11-12)",
     "file": "../traces/train_s3_counter_separation.jsonl",
     "path_label": "(c) original training",
-    "revision": "`rollout.py` 2026-07-24 copy, shipped sha256 `00a0a5c896edaad834cce9e6cdfa4c2ffcf6b0579c6c7330dfe76f265dc6f12a`"
+    "revision": "`rollout.py` 2026-07-24 copy, shipped sha256 `2599a73fab8bccb9288cb087c3c3ac91b7a80938b412f9c5a02c6ca327113d4c`"
   }
 ]
