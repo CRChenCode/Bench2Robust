@@ -1,0 +1,49 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments and packaging
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.aws/
+.wandb_key
+.netrc
+
+# Experiment services and generated artifacts
+wandb/
+checkpoints/
+models/
+logs/
+results/
+rollouts/
+*.log
+*.jsonl
+# ...except the released verification traces
+!traces/*.jsonl
+!traces/**/*.jsonl
+*.tar
+*.tar.gz
+*.zip
+
+# Editors and operating systems
+.DS_Store
+.idea/
+.vscode/
+*~
+*.bak
+

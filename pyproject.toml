@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bench2robust"
+version = "0.2.0"
+description = "Controllable uncertainty injection for tool-use benchmarks"
+readme = "README.md"
+license = {text = "CC-BY-NC-4.0"}
+requires-python = ">=3.10"
+dependencies = []
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: Free for non-commercial use",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.optional-dependencies]
+# τ²-bench is not on PyPI (the PyPI project named "tau2" is an unrelated package);
+# install it from the upstream repository at the commit used for the experiments.
+tau2 = ["tau2 @ git+https://github.com/sierra-research/tau2-bench@5ebebbe827b455b3ed04fcb9294235c6ef4e5fd6"]
+
+[tool.setuptools.packages.find]
+include = ["bench2robust*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

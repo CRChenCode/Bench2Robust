@@ -1,0 +1,58 @@
+[
+  {
+    "id": "B1",
+    "title": "Original evaluation harness, Retail S2 persistence",
+    "file": "../traces/eval_retail_s2.jsonl",
+    "path_label": "(b) original eval",
+    "revision": "`run_inference.py`, 2026-07-28 snapshot, shipped sha256 `149217789631ac32af71ed9d8377d373872c9407cd37e6ec000dd7bf16d98136`"
+  },
+  {
+    "id": "B2",
+    "title": "Original evaluation harness, Retail S3 persistence",
+    "file": "../traces/eval_retail_s3.jsonl",
+    "path_label": "(b) original eval",
+    "revision": "`run_inference.py`, 2026-07-28 snapshot, shipped sha256 `149217789631ac32af71ed9d8377d373872c9407cd37e6ec000dd7bf16d98136`"
+  },
+  {
+    "id": "B3",
+    "title": "Original evaluation harness, Retail S2, B and K_max used up by a stochastic injection",
+    "file": "../traces/eval_counter_separation.jsonl",
+    "path_label": "(b) original eval",
+    "revision": "`run_inference.py`, 2026-07-28 snapshot, shipped sha256 `149217789631ac32af71ed9d8377d373872c9407cd37e6ec000dd7bf16d98136`"
+  },
+  {
+    "id": "B4",
+    "title": "Original evaluation harness, Retail S3, B and K_max used up by a stochastic injection (run 2026-11-12)",
+    "file": "../traces/eval_s3_counter_separation.jsonl",
+    "path_label": "(b) original eval",
+    "revision": "`run_inference.py`, 2026-07-28 snapshot, shipped sha256 `149217789631ac32af71ed9d8377d373872c9407cd37e6ec000dd7bf16d98136`"
+  },
+  {
+    "id": "C1",
+    "title": "Original training environment, Retail S2 persistence",
+    "file": "../traces/retail_s2.jsonl",
+    "path_label": "(c) original training",
+    "revision": "`rollout.py` 2026-07-24 copy, shipped sha256 `00a0a5c896edaad834cce9e6cdfa4c2ffcf6b0579c6c7330dfe76f265dc6f12a`"
+  },
+  {
+    "id": "C2",
+    "title": "Original training environment, Retail S3 persistence",
+    "file": "../traces/retail_s3.jsonl",
+    "path_label": "(c) original training",
+    "revision": "`rollout.py` 2026-07-24 copy, shipped sha256 `00a0a5c896edaad834cce9e6cdfa4c2ffcf6b0579c6c7330dfe76f265dc6f12a`"
+  },
+  {
+    "id": "C3",
+    "title": "Original training environment, Retail S2, B and K_max used up by a stochastic injection",
+    "file": "../traces/train_counter_separation.jsonl",
+    "path_label": "(c) original training",
+    "revision": "`rollout.py` 2026-07-24 copy, shipped sha256 `00a0a5c896edaad834cce9e6cdfa4c2ffcf6b0579c6c7330dfe76f265dc6f12a`"
+  },
+  {
+    "id": "C4",
+    "title": "Original training environment, Retail S3, B and K_max used up by a stochastic injection (run 2026-11-12)",
+    "file": "../traces/train_s3_counter_separation.jsonl",
+    "path_label": "(c) original training",
+    "revision": "`rollout.py` 2026-07-24 copy, shipped sha256 `00a0a5c896edaad834cce9e6cdfa4c2ffcf6b0579c6c7330dfe76f265dc6f12a`"
+  }
+]
